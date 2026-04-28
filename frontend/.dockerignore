@@ -1,0 +1,10 @@
+node_modules
+build
+dist
+.git
+.gitignore
+.vscode
+__generated-style-types__
+.yarn/cache
+.pnp.*
+README.md
