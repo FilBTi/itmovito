@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "paths": {
       "@/*": ["./src/*"]
     }
