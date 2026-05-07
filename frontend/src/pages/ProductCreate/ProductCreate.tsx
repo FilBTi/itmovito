@@ -1,7 +1,8 @@
-import { routerUrls } from '@/App';
-import ProductForm from '@/components/features/ProductForm';
 import { Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
+
+import { routerUrls } from '@/App';
+import ProductForm from '@/components/features/ProductForm';
 
 const ProductCreate: React.FC = () => {
   const navigate = useNavigate();

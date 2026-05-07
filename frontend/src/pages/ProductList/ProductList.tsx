@@ -1,34 +1,43 @@
-import { routerUrls } from '@/App';
-import ProductCard from '@/components/features/ProductCard';
-import { ProductListSchema } from '@/entities/product/productItem.shema';
-import { getProductsList } from '@/mocks/MOCK_products';
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
-import * as v from 'valibot';
+
+import { routerUrls } from '@/App';
+import { fetchProducts, productKeys } from '@/api/products';
+import ProductCard from '@/components/features/ProductCard';
 
 const ProductList = () => {
   const navigate = useNavigate();
 
-  const {
-    isPending,
-    isError,
-    data: products,
-  } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => {
-      const list = v.parse(ProductListSchema, getProductsList());
-
-      return Promise.resolve(list);
-    },
+  const { isPending, isError, data } = useQuery({
+    queryKey: productKeys.list(),
+    queryFn: () => fetchProducts(),
   });
 
   if (isPending) {
-    return 'Loading...';
+    return (
+      <Container sx={{ py: 6 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
   }
 
   if (isError) {
-    return 'Error...';
+    return (
+      <Container sx={{ py: 6 }}>
+        <Alert severity="error">Не удалось загрузить товары.</Alert>
+      </Container>
+    );
   }
 
   return (
@@ -68,7 +77,7 @@ const ProductList = () => {
           alignItems: 'stretch',
         }}
       >
-        {products.items.map((product) => (
+        {data.map((product) => (
           <ProductCard
             key={product.id}
             product={product}

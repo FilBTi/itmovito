@@ -1,53 +1,58 @@
-import { routerUrls } from '@/App';
-import ProductForm from '@/components/features/ProductForm';
-import { ProductSchema } from '@/entities/product/product.schema';
-import { getProductById } from '@/mocks/MOCK_products';
-import { Alert, Container, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  CircularProgress,
+  Container,
+  Typography,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router';
-import * as v from 'valibot';
+
+import { routerUrls } from '@/App';
+import { ApiError } from '@/api/client';
+import { fetchProductById, productKeys } from '@/api/products';
+import ProductForm from '@/components/features/ProductForm';
 
 const ProductEdit: React.FC = () => {
   const { id } = useParams();
+  const numericId = Number(id);
   const navigate = useNavigate();
 
   const {
     isPending,
     isError,
+    error,
     data: product,
   } = useQuery({
-    queryKey: ['product', id],
-    queryFn: () => {
-      const found = getProductById(Number(id));
-
-      if (!found) {
-        return null;
-      }
-
-      return v.parse(ProductSchema, found);
-    },
+    queryKey: productKeys.detail(numericId),
+    queryFn: () => fetchProductById(numericId),
+    enabled: Number.isFinite(numericId),
+    retry: (failureCount, err) =>
+      err instanceof ApiError && err.status === 404 ? false : failureCount < 3,
   });
 
   if (isPending) {
     return (
       <Container sx={{ py: 6 }}>
-        <Typography>Loading...</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
       </Container>
     );
   }
 
   if (isError) {
+    if (error instanceof ApiError && error.status === 404) {
+      return (
+        <Container sx={{ py: 6 }}>
+          <Alert severity="warning">Товар не найден.</Alert>
+        </Container>
+      );
+    }
+
     return (
       <Container sx={{ py: 6 }}>
         <Alert severity="error">Не удалось загрузить товар.</Alert>
-      </Container>
-    );
-  }
-
-  if (!product) {
-    return (
-      <Container sx={{ py: 6 }}>
-        <Alert severity="warning">Товар не найден.</Alert>
       </Container>
     );
   }
@@ -58,7 +63,7 @@ const ProductEdit: React.FC = () => {
         Редактирование товара
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-        {product.title}
+        {product.name}
       </Typography>
 
       <ProductForm
@@ -66,7 +71,7 @@ const ProductEdit: React.FC = () => {
         mode="edit"
         productId={product.id}
         defaultCategory={product.category.slug}
-        defaultTitle={product.title}
+        defaultName={product.name}
         defaultDescription={product.description}
         defaultPrice={product.price}
         onCancel={() =>

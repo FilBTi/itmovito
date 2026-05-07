@@ -7,7 +7,7 @@ import { CategorySchema } from './category.schema';
 export const ProductSchema = v.object({
   id: v.number(),
   category: CategorySchema,
-  title: v.string(),
+  name: v.string(),
   description: v.string(),
   price: v.number(),
   createdAt: DateSchema,

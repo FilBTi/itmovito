@@ -8,3 +8,6 @@ __generated-style-types__
 .yarn/cache
 .pnp.*
 README.md
+.yarn/unplugged
+.yarn/sdks
+.yarn/install-state.gz

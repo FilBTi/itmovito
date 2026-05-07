@@ -1,6 +1,7 @@
-import AppQueryClientProvider from '@/components/providers/AppQueryClientProvider';
 import { CssBaseline } from '@mui/material';
 import { RouterProvider } from 'react-router';
+
+import AppQueryClientProvider from '@/components/providers/AppQueryClientProvider';
 
 import router from './router';
 

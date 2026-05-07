@@ -14,6 +14,7 @@ REST API на NestJS 10 + Prisma 7 (PostgreSQL) для управления об
 ```bash
 pnpm install
 pnpm prisma migrate dev
+pnpm db:seed
 pnpm dev
 ```
 
@@ -59,5 +60,6 @@ prisma/
 
 - `pnpm dev` — запуск с watch
 - `pnpm build` — сборка в `dist/`
+- `pnpm db:seed` — заполнить базу тестовыми объявлениями
 - `pnpm test` / `pnpm test:e2e` — тесты
 - `pnpm lint` / `pnpm format` — линт и форматирование

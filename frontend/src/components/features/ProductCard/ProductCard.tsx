@@ -1,4 +1,3 @@
-import { ProductItem } from '@/entities/product/productItem.shema';
 import {
   Box,
   Card,
@@ -8,6 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
+
+import { ProductItem } from '@/entities/product/productItem.shema';
 
 interface ProductCardProps {
   product: ProductItem;
@@ -59,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, to }) => {
                   component="h2"
                   sx={{ fontWeight: 700 }}
                 >
-                  {product.title}
+                  {product.name}
                 </Typography>
               </Box>
 

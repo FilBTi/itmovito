@@ -1,8 +1,11 @@
-FROM node:20-alpine
+FROM node:20-alpine AS build
 
 RUN corepack enable
 
 WORKDIR /app
+
+ARG API_DOMAIN=http://localhost:3000
+ENV API_DOMAIN=$API_DOMAIN
 
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
@@ -11,6 +14,13 @@ RUN yarn install --immutable
 
 COPY . .
 
-EXPOSE 3030
+RUN yarn build
 
-CMD ["yarn", "webpack", "serve", "--mode", "development", "--host", "0.0.0.0", "--port", "3030"]
+FROM nginx:alpine
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

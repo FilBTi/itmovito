@@ -10,3 +10,5 @@ export const CategorySchema = v.pipe(
   v.picklist(['auto', 'real_estate', 'electronics']),
   v.transform((ctg) => ({ slug: ctg, name: CategoryToName[ctg] })),
 );
+
+export type ProductCategory = v.InferInput<typeof CategorySchema>;

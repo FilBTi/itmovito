@@ -1,9 +1,10 @@
+import { createBrowserRouter } from 'react-router';
+
 import MainLayout from '@/components/layout/MainLayout';
 import ProductCreate from '@/pages/ProductCreate';
 import ProductDetails from '@/pages/ProductDetails';
 import ProductEdit from '@/pages/ProductEdit';
 import ProductList from '@/pages/ProductList';
-import { createBrowserRouter } from 'react-router';
 
 import routerUrls from './routerUrls';
 
