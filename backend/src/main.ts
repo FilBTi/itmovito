@@ -8,13 +8,21 @@ import { swaggerDocs } from './utils/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const corsOrigins = (process.env.CORS_ORIGINS ?? '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin: [
-      'http://localhost:3030',
-      'http://127.0.0.1:3030',
-      'http://localhost:3031',
-      'http://127.0.0.1:3031',
-    ],
+    origin:
+      corsOrigins.length > 0
+        ? corsOrigins
+        : [
+            'http://localhost:3030',
+            'http://127.0.0.1:3030',
+            'http://localhost:3031',
+            'http://127.0.0.1:3031',
+          ],
     credentials: true,
   });
 

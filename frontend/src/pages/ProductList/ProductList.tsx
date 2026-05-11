@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Container,
   Stack,
+  type Theme,
   Typography,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
@@ -40,6 +41,8 @@ const ProductList = () => {
     );
   }
 
+  const goToCreate = () => void navigate(routerUrls.product.createPage.create());
+
   return (
     <Container sx={{ py: 6 }}>
       <Stack
@@ -56,35 +59,57 @@ const ProductList = () => {
             Объявления о продаже и аренде
           </Typography>
         </Box>
-        <Button
-          variant="contained"
-          size="large"
-          onClick={() => void navigate(routerUrls.product.createPage.create())}
-        >
+        <Button variant="contained" size="large" onClick={goToCreate}>
           Добавить товар
         </Button>
       </Stack>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, minmax(0, 1fr))',
-            lg: 'repeat(3, minmax(0, 1fr))',
-          },
-          gap: 3,
-          alignItems: 'stretch',
-        }}
-      >
-        {data.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            to={routerUrls.product.item.create(product.id)}
-          />
-        ))}
-      </Box>
+      {data.length === 0 ? (
+        <Box
+          sx={{
+            py: 8,
+            px: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            border: (theme: Theme) => `1px dashed ${theme.palette.divider}`,
+            borderRadius: 2,
+            gap: 2,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            Пока нет товаров
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Создайте первое объявление, чтобы оно появилось в каталоге.
+          </Typography>
+          <Button variant="contained" onClick={goToCreate}>
+            Создать товар
+          </Button>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              lg: 'repeat(3, minmax(0, 1fr))',
+            },
+            gap: 3,
+            alignItems: 'stretch',
+          }}
+        >
+          {data.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              to={routerUrls.product.item.create(product.id)}
+            />
+          ))}
+        </Box>
+      )}
     </Container>
   );
 };

@@ -6,7 +6,7 @@ import {
   ItemFilterDto,
   UpdateItemDto,
 } from './dto/items.dto';
-import { Prisma } from 'generated/prisma/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ItemsService {

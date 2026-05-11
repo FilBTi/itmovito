@@ -115,6 +115,6 @@ resource "mws_vpc_firewall_rule" "firewall_rule" {
     }
   }
 
-  proto_ports = ["TCP:22"]
+  proto_ports = ["TCP:22", "TCP:80", "TCP:3000"]
   active      = true
 }
