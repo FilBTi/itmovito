@@ -1,4 +1,4 @@
-sa_key_path = "./keys/itmovito-service_auth-key.txt"
+sa_key_path = "./keys/service-account-key.txt"
 project     = "itmovito"
 network_name = "mynetwork"
 subnet_name  = "mysubnet"
